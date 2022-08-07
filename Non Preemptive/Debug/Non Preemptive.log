@@ -1,0 +1,3 @@
+﻿  Non Preemptive.cpp
+C:\Users\HP\Desktop\Non Preemptive\Non Preemptive\Non Preemptive.cpp(69,26): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  Non Preemptive.vcxproj -> C:\Users\HP\Desktop\Non Preemptive\Debug\Non Preemptive.exe

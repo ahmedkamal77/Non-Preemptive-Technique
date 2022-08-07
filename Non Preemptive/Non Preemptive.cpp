@@ -1,0 +1,88 @@
+// Non Preemptive.cpp : This file contains the 'main' function. Program execution begins and ends there.
+//
+
+#include<iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+struct task
+{
+    int priority;
+    double r;
+    double p;
+    double e;
+    double d;
+    double s;
+    int x;
+    int y;
+};
+
+bool r_comp(task& a, task& b)
+{
+    return a.r < b.r;
+}
+
+int main()
+{
+    //non-preemptive
+    int n, j = 15;
+    cout << "Enter number of tasks: ";
+    cin >> n;
+    vector<task> tasks(n);
+    for (int i = 0; i < n; ++i)
+    {
+        cout << "Enter release time of T" << i + 1 << ": ";
+        cin >> tasks[i].r;
+        cout << "Enter period of T" << i + 1 << ": ";
+        cin >> tasks[i].p;
+        cout << "Enter execution time of T" << i + 1 << ": ";
+        cin >> tasks[i].e;
+        cout << "Enter deadline of T" << i + 1 << ": ";
+        cin >> tasks[i].d;
+        cout << "Enter priority of T" << i + 1 << ": ";
+        cin >> tasks[i].priority;
+        cout << endl;
+        tasks[i].x = i + 1;
+        tasks[i].y = 1;
+    }
+    sort(tasks.begin(), tasks.end(), r_comp);
+    for (int i = 1; i < n; ++i)
+    {
+        if (tasks[0].r == tasks[i].r)
+        {
+            if (tasks[0].priority < tasks[i].priority)
+                swap(tasks[0], tasks[i]);
+        }
+    }
+    tasks[0].s = tasks[0].r;
+    while (j--)
+    {
+        cout << "from" << tasks[0].s << "to" << tasks[0].s + tasks[0].e << ": j" << tasks[0].x << tasks[0].y << endl;
+        if (tasks[0].d * tasks[0].y < tasks[0].s + tasks[0].e)
+        {
+            cout << "j" << tasks[0].x << tasks[0].y << "has exceeded deadline" << endl;
+            break;
+        }
+        tasks[0].y++;
+        tasks[0].r += tasks[0].p;
+        int startNextJob = tasks[0].s + tasks[0].e;
+        sort(tasks.begin(), tasks.end(), r_comp);
+        for (int i = 1; i < n; ++i)
+        {
+            if (tasks[0].r <= startNextJob && tasks[i].r <= startNextJob)
+            {
+                if (tasks[0].priority < tasks[i].priority)
+                    swap(tasks[0], tasks[i]);
+            }
+        }
+        if (tasks[0].r > startNextJob)
+            tasks[0].s = tasks[0].r;
+        else
+            tasks[0].s = startNextJob;
+
+    }
+    return 0;
+}
+
+
